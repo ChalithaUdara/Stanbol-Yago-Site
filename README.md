@@ -78,6 +78,33 @@ Once downloaded these RDF files need to be stored in
 
 ### (3) Entity Scores
 
+The Yago indexer uses the incoming links from other wikipages to
+calculate the rank of entities. Entities with more incoming links get an
+higher rank. The file containing outgoing links to other pages is "yagoWikipediaInfo.ttl". 
+In addition to outlinks this file contain the sizes of the wiki articles and urls for articles.
+This file need to be preprocessed to remove informations other than outlinks.
+
+If you have already downloaded the full yago dataset, you can use following command to generate 
+incoming links
+
+    sed -e '/#.*/d' -e '/@.*/d' -e '/.*has.*/d' -e '/^\s*$/d' -e 's/.*<\([^>]*\)> ./\1/' yagoWikipediaInfo.ttl \
+        | sort \
+        | uniq -c  \
+        | sort -nr > incoming_links.txt
+
+Otherwise use the following command to download and create incoming links file
+
+    curl www.mpi-inf.mpg.de/yago-naga/yago/download/yago/yagoWikipediaInfo.ttl.7z \
+        | 7z \
+        | sed -e '/#.*/d' -e '/@.*/d' -e '/.*has.*/d' -e '/^\s*$/d' -e 's/.*<\([^>]*\)> ./\1/' \
+        | sort \
+        | uniq -c  \
+        | sort -nr > incoming_links.txt
+
+The resulting file MUST BE copied to
+
+    indexing/resources/incoming_links.txt
+
 ### (4) Create the Index
 
     java -Xmx1024m -jar org.apache.stanbol.entityhub.indexing.yago-*.jar index
