@@ -50,145 +50,33 @@ Within this folder all the
 
 will be located.
 
-### (2) Adapt the configuration
+The indexing itself can be started by
 
-The configuration is located within the
+    java -jar org.apache.stanbol.entityhub.indexing.yago-*.jar index
 
-    indexing/config
+but before doing this please note the points (2), (3) and (4)
 
-directory.
+### (2) Download YAGO
 
-The indexer supports two indexing modes
+Yago can be downloaded from
+	
+    http://www.mpi-inf.mpg.de/yago-naga/yago/downloads.html
 
-1. Iterate over the data and lookup the scores for entities (default). 
-For this mode the "entityDataIterable" and an "entityScoreProvider" MUST BE 
-configured. If no entity scores are available, a default entityScoreProvider 
-provides no entity scores. This mode is typically used to index all entities of 
-a dataset.
-2. Iterate over the entity IDs and Scores and lookup the data. For this Mode an 
-"entityIdIterator" and an "entityDataProvider" MUST BE configured. This mode is 
-typically used if only a small sub-set of a large dataset is indexed. This might
-be the case if Entity-Scores are available and users want only to index the e.g.
-10000 most important Entities or if a dataset contains Entities of many different
-types but one wants only include entities of a specific type (e.g. Species in
-DBpedia).
+Here you can download complete yago dataset or the better approach would
+be to download files seperately according to needs (Can preview files before downloading).
+The actual files needed depend on the configuration of the mappings
+(indexing/config/mappings.txt). Generally one need to make sure that
+all the RDF dumps with the source data for the specified mappings
+are available. 
+It is also important to download the files in NTurtle(.ttl) format.
 
+To Do: add typically useful files
 
-The configuration of the mentioned components is contained in the main indexing 
-configuration file explained below.
-
-#### Main indexing configuration (indexing.properties)
-
-This file contains the main configuration for the indexing process.
-
-* the "name" property MUST BE set to the name of the referenced site to be created 
-by the indexing process
-* the "entityDataIterable" is used to configure the component iterating over the 
-RDF data to be indexed. The "source" parameter refers to the directory the RDF 
-files to be indexed are searched. The RDF files can be compressed with 'gz', 
-'bz2' or 'zip'. It is even supported to load multiple RDF files contained in a 
-single ZIP archive.
-* the "entityScoreProvider" is used to provide the ranking for entities. A 
-typical example is the number of incoming links. Such rankings are typically 
-used to weight recommendations and sort result lists. (e.g. by a query for 
-"Paris" it is much more likely that a user refers to Paris in France as to one 
-of the two Paris in Texas). If no rankings are available you should use the 
-"org.apache.stanbol.entityhub.indexing.core.source.NoEntityScoreProvider".
-* the "scoreNormalizer" is only useful in case entity scores are available. 
-This component is used to normalize rankings or also to filter entities with 
-low rankings.
-* the "entityProcessor" is used to process (map, convert, filter) information 
-of entities before indexing. The mapping configuration is provided in an separate 
-file (default "mapping.txt").
-* the "entityPostProcessor" is used to process already indexed entities in a 
-2nd iteration. This has the advantage, that processors used in the post-processing 
-can assume that all raw data are already present within IndexingDestination. 
-For this step the IndexingDestination is used for both source and destination. 
-See also [STANBOL-591](https://issues.apache.org/jira/browse/STANBOL-591)
-* Indexes need to provide the configurations used to store entities. The 
-"fieldConfiguration" allows to specify this. Typically it is the same mapping 
-file as used for the "entityProcessor" however this is not a requirement.
-* the "indexingDestination" property is used to configure the target for the 
-indexing. Currently there is only a single implementation that stores the indexed 
-data within a SolrYard. The "boosts" parameter can be used to boost (see Solr 
-Documentation for details) specific fields (typically labels) for full text 
-searches.
-* all properties starting with "org.apache.stanbol.entityhub.site." are used for
- the configuration of the referenced site.
-
-Please note also the documentation within the "indexing.properties" file for details.
-
-#### Mapping configuration (mappings.txt)
-
-Mappings are used for three different purposes:
-
-1. During the indexing process by the "entityProcessor" to process the 
-information of each entity
-2. At runtime by the local Cache to process single Entities that are updated in the cache.
-3. At runtime by the Entityhub when importing an Entity from a referenced Site.
-
-The configurations for (1) and (2) are typically identical. For (3) one might 
-want to use a different configuration. The default configuration assumes to 
-use the same configuration (mappings.txt) for (1) and (2) and no specific 
-configuration for (3).
-
-The mappings.txt in its default already include mappings for popular ontologies 
-such as Dublin Core, SKOS and FOAF. Domain specific mappings can be added to 
-this configuration. 
-
-#### Score Normalizer configuration
-
-The default configuration also provides examples for configurations of the 
-different score normalisers. However by default they are not used.
-
-* "minscore.properties": Example of how to configure minimum score for Entities 
-to be indexed
-* "scorerange.properties": Example of how to normalise the maximum/minimum score
- of Entities to the configured range.
-
-NOTE: 
-
-* To use score normalisation, scores need to be provided for Entities. This means 
-an "entityScoreProvider" or an "entityIdIterator" needs to be configured 
-(indexing.properties).
-* Multiple score normalisers can be used. The call order is determined by the 
-configuration of the "scoreNormalizer" property (indexing.properties). 
-
-### (3) Provide the RDF files to be indexed
-
-All sources for the indexing process need to be located within the the
-
-    indexing/resources
-
-directory
-
-By default the RDF files need to be located within
+Once downloaded these RDF files need to be stored in
 
     indexing/resources/rdfdata
 
-however this can be changed via the "source" parameter of the "entityDataIterable" 
-or "entityDataProvider" property in the main indexing configuration (indexing.properties).
-
-
-Supported RDF files are:
-
-* RDF/XML (by using one of "rdf", "owl", "xml" as extension): Note that this 
-encoding is not well suited for importing large RDF datasets.
-* N-Triples (by using "nt" as extension): This is the preferred format for 
-importing (especially large) RDF datasets.
-* NTurtle (by using "ttl" as extension)
-* N3 (by using "n3" as extension)
-* NQuards (by using "nq" as extension): Note that all named graphs will be 
-imported into the same index.
-* Trig (by using "trig" as extension)
-
-Supported compression formats are:
-
-* "gz" and "bz2" files: One need to use double file extensions to indicate both 
-the used compression and RDF file format (e.g. myDump.nt.bz2)
-* "zip": For ZIP archives all files within the archive are treated separately. 
-That means that even if a ZIP archive contains multiple RDF files, all of them 
-will be imported.
+### (3) Entity Scores
 
 ### (4) Create the Index
 
