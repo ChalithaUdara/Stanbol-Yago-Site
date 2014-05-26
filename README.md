@@ -60,7 +60,7 @@ but before doing this please note the points (2), (3) and (4)
 
 Yago can be downloaded from
 	
-    http://www.mpi-inf.mpg.de/yago-naga/yago/downloads.html
+    http://www.mpi-inf.mpg.de/departments/databases-and-information-systems/research/yago-naga/yago/downloads/
 
 Here you can download complete yago dataset or the better approach would
 be to download files seperately according to needs (Can preview files before downloading).

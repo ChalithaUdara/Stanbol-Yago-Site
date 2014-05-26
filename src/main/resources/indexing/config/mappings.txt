@@ -28,25 +28,18 @@
 # languages are indexed
 #| @=null;en;de;fr;it
 
-# --- RDF RDFS and OWL Mappings ---
-# This configuration only index properties that are typically used to store
-# instance data defined by such namespaces. This excludes ontology definitions
+# --- RDF, RDFS and OWL Mappings ---
+# indexing ontology
+owl:*
+rdfs:*
 
-# NOTE that nearly all other ontologies are are using properties of these three
-#      schemas, therefore it is strongly recommended to include such information!
-
+rdfs:label | d=entityhub:text
+rdfs:comment | d=entityhub:text
 rdf:type | d=entityhub:ref
-
-rdfs:label 
-rdfs:comment
 rdfs:seeAlso | d=entityhub:ref
 
-
+# used by LOD to link to URIs used to identify the same Entity
 owl:sameAs | d=entityhub:ref
-
-#If one likes to also index ontologies one should add the following statements
-#owl:*
-#rdfs:*
 
 # --- Dublin Core (DC) ---
 # The default configuration imports all dc-terms data and copies values for the
@@ -142,33 +135,10 @@ skos:narrowerTransitive > skos:narrower
 skos:broaderTransitive > skos:broader
 
 
-# --- Semantically-Interlinked Online Communities (SIOC) ---
-
-# An ontology for describing the information in online communities. 
-# This information can be used to export information from online communities 
-# and to link them together. The scope of the application areas that SIOC can 
-# be used for includes (and is not limited to) weblogs, message boards, 
-# mailing lists and chat channels.
-sioc:*
-
-# --- biographical information (bio)
-# A vocabulary for describing biographical information about people, both living
-# and dead. (see http://vocab.org/bio/0.1/)
-bio:*
-
-# --- Rich Site Summary (rss) ---
-rss:*
-
-# --- GoodRelations (gr) ---
-# GoodRelations is a standardised vocabulary for product, price, and company data
-gr:*
-
-# --- Creative Commons Rights Expression Language (cc)
-# The Creative Commons Rights Expression Language (CC REL) lets you describe 
-# copyright licenses in RDF.
-cc:*
-
-
+#yago specific mappings
+yago:*
+# yago dbpedia ontology mappings
+http://dbpedia.org/ontology/*
 
 
 
