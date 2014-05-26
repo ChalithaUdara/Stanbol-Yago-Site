@@ -70,7 +70,17 @@ all the RDF dumps with the source data for the specified mappings
 are available. 
 It is also important to download the files in NTurtle(.ttl) format.
 
-To Do: add typically useful files
+Typically useful files may include the followings
+
+    yagoSchema
+    yagoTypes
+    yagoTaxonomy
+    yagoFacts
+    yagoLabels
+    yagoLiteralFacts
+    yagoMultilingualInstanceLabels
+    yagoDBpediaClasses
+    yagoDBpediaInstances
 
 Once downloaded these RDF files need to be stored in
 
@@ -120,44 +130,25 @@ After the indexing completes the distribution folder
 
 will contain two files
 
-1. org.apache.stanbol.data.site.{name}-{version}.jar: This is a Bundle that can 
+1. org.apache.stanbol.data.site.yago-{version}.jar: This is a Bundle that can 
 be installed to any OSGI environment running the Apache Stanbol Entityhub. When 
 Started it will create and configure
 
- * a "ReferencedSite" accessible at "http://{host}/{root}/entityhub/site/{name}"
+ * a "ReferencedSite" accessible at "http://{host}/{root}/entityhub/site/yago"
  * a "Cache" used to connect the ReferencedSite with your Data and
  * a "SolrYard" that managed the data indexed by this utility.
 
  When installing this bundle the Site will not be yet work, because this Bundle 
  does not contain the indexed data but only the configuration for the Solr Index.
 
-2. {name}.solrindex.zip: This is the ZIP archive with the indexed data. This 
+2. yago.solrindex.zip: This is the ZIP archive with the indexed data. This 
 file will be requested by the Apache Stanbol Data File Provider after installing 
 the Bundle described above. To install the data you need copy this file to the 
-"/sling/datafiles" folder within the working directory of your Stanbol Server.
+"/stanbol/datafiles" folder within the working directory of your Stanbol Server.
 
  If you copy the ZIP archive before installing the bundle, the data will be 
  picked up during the installation of the bundle automatically. If you provide 
  the file afterwards you will also need to restart the SolrYard installed by the 
  Bundle.
-
-{name} denotes to the value you configured for the "name" property within the
-"indexing.properties" file.
-
-### A note about blank nodes
-
-If your input data sets contain large numbers of blank nodes, you may find that
-you have problems running out of heap space during indexing. This is because Jena
-(like many semantic stores) keeps a store of blank nodes in core memory while 
-importing. Keeping in mind that EntityHub does not support the use of blank nodes,
-there is a means of indexing such data sets nonetheless. You can convert them to
-named nodes and then index. There is a convenient tool packaged with Stanbol for
-this purpose, called "Urify" (org.apache.stanbol.entityhub.indexing.Urify).
-It is available in the runnable JAR file built by this indexer. To use it, put that
-JAR on your classpath, and you can execute Urify, giving it a list of files to process.
-Use the "-h" or "--help" flag to see options for Urify:
-
-    java -Xmx1024m -cp org.apache.stanbol.entityhub.indexing.yago-*.jar \
-    org.apache.stanbol.entityhub.indexing.Urify --help
     
     
