@@ -41,61 +41,6 @@ rdfs:seeAlso | d=entityhub:ref
 # used by LOD to link to URIs used to identify the same Entity
 owl:sameAs | d=entityhub:ref
 
-# --- Dublin Core (DC) ---
-# The default configuration imports all dc-terms data and copies values for the
-# old dc-elements standard over to the according properties of the dc-terms
-# standard.
-
-# NOTE that a lot of other ontologies are also using DC for some of there data
-#      therefore it is strongly recommended to include such information!
-
-#mapping for all dc-terms properties
-dc:*
-
-# copy dc:title to rdfs:label
-dc:title > rdfs:label
-
-# deactivated by default, because such mappings are mapped to dc-terms
-#dc-elements:*
-
-# mappings for the dc-elements properties to the dc-terms
-dc-elements:contributor > dc:contributor
-dc-elements:coverage > dc:coverage
-dc-elements:creator > dc:creator
-dc-elements:date > dc:date
-dc-elements:description > dc:description
-dc-elements:format > dc:format
-dc-elements:identifier > dc:identifier
-dc-elements:language > dc:language
-dc-elements:publisher > dc:publisher
-dc-elements:relation > dc:relation
-dc-elements:rights > dc:rights
-dc-elements:source > dc:source
-dc-elements:subject > dc:subject
-dc-elements:title > dc:title
-dc-elements:type > dc:type
-#also use dc-elements:title as label
-dc-elements:title > rdfs:label
-
-# --- Social Networks (via foaf) ---
-#The Friend of a Friend schema is often used to describe social relations between people
-foaf:*
-
-# copy the name of a person over to rdfs:label
-foaf:name > rdfs:label
-
-# additional data types checks
-foaf:knows | d=entityhub:ref
-foaf:made | d=entityhub:ref
-foaf:maker | d=entityhub:ref
-foaf:member | d=entityhub:ref
-foaf:homepage | d=xsd:anyURI
-foaf:depiction | d=xsd:anyURI
-foaf:img | d=xsd:anyURI
-foaf:logo | d=xsd:anyURI
-#page about the entity
-foaf:page | d=xsd:anyURI
-
 
 # --- Schema.org --
 
@@ -137,6 +82,20 @@ skos:broaderTransitive > skos:broader
 
 #yago specific mappings
 yago:*
+#Map yago preffered meaning to rdfs:lable
+yago:isPreferredMeaningOf > rdfs:label
+
+# filter date time related
+yago:wasBornOnDate | d=xsd:dateTime
+yago:wasCreatedOnDate | d=xsd:dateTime
+yago:happenedOnDate | d=xsd:dateTime
+yago:startedOnDate | d=xsd:dateTime
+yago:diedOnDate | d=xsd:dateTime
+yago:wasDestroyedOnDate | d=xsd:dateTime
+yago:endedOnDate | d=xsd:dateTime
+yago:happenedOnDate | d=xsd:dateTime
+
+
 # yago dbpedia ontology mappings
 http://dbpedia.org/ontology/*
 
