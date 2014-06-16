@@ -61,7 +61,9 @@ then
 	-e 's/@ukr ./@uk ./' \
 	-e 's/@urd ./@ur ./' \
 	-e 's/@vie ./@vi ./' \
-        -e 's/@zho ./@zh ./' yagoMultilingualInstanceLabels.ttl
+        -e 's/@zho ./@zh ./' \
+	-e '/.*\".*\"@[A-Za-z][A-Za-z][A-Za-z][A-Za-z]*/d' \
+	-e '/.*\".*\"@[A-Za-z] ./d' yagoMultilingualInstanceLabels.ttl
 else
    echo "[WARNING] Yago dump for multilingual labels is not found"
 fi
