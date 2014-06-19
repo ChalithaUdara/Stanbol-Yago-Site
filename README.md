@@ -54,7 +54,7 @@ The indexing itself can be started by
 
     java -jar org.apache.stanbol.entityhub.indexing.yago-*.jar index
 
-but before doing this please note the points (2), (3) and (4)
+but before doing this please note the points (2) to (6)
 
 ### (2) Download YAGO
 
@@ -74,6 +74,7 @@ Typically useful files may include the followings
 
     yagoSchema
     yagoTypes
+    yagoTransitiveType
     yagoTaxonomy
     yagoFacts
     yagoLabels
@@ -86,7 +87,43 @@ Once downloaded these RDF files need to be stored in
 
     indexing/resources/rdfdata
 
-### (3) Entity Scores
+but before storing these files you need to preprocess these dumps in order to
+successfully index using this indexer tool. Preprocessing steps are given below(see points (3) and (4))
+
+### (3) Fixing Language Codes
+
+One important thing to do is to convert Yago language codes (Yago uses ISO 639-2 codes)
+to language codes used by Apache Stanbol (Stanbol uses ISO 639-1 codes).
+
+Dump files
+
+    yagoLabels.ttl
+    yagoMultilingualInstanceLabels.ttl 
+
+contains labels for entities.
+
+You need to copy the script language_code_convert.sh to the directory containing above files and
+run it in order to fix language codes.
+
+NOTE: If you did not perform this step you will not be able to correctly link mentions with entities
+in your referenced site. Therefore it is very important to perform this step.
+
+### (4) Fixing corrupted RDF files
+
+There are URIs in the downloaded Yago dumps that will not be parsed by Jena RDF Parser.
+(these will generate RiotExceptions and files will not be indexed correctly)
+
+For dealing with corrupted RDF files in Freebase, Andy Seaborne has created an Perl script that 
+is able to correct all those issues. Luckily we can use the same script for fixing Yago dumps.
+
+You can download the script from here
+
+    http://people.apache.org/~andy/Freebase20121223/fixit
+
+In order to fix yago dumps you need to copy the downloaded "fixit" perl script and
+"dumps_fix.sh" script to the directory containing yago files and run the dumps_fix script 
+
+### (5) Entity Scores
 
 The Yago indexer uses the incoming links from other wikipages to
 calculate the rank of entities. Entities with more incoming links get an
@@ -115,7 +152,7 @@ The resulting file MUST BE copied to
 
     indexing/resources/incoming_links.txt
 
-### (4) Create the Index
+### (6) Create the Index
 
     java -Xmx1024m -jar org.apache.stanbol.entityhub.indexing.yago-*.jar index
 
