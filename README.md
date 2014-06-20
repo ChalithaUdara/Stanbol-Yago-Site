@@ -110,18 +110,13 @@ in your referenced site. Therefore it is very important to perform this step.
 
 ### (4) Fixing corrupted RDF files
 
-There are URIs in the downloaded Yago dumps that will not be parsed by Jena RDF Parser.
-(these will generate RiotExceptions and files will not be indexed correctly)
+There are URIs in the downloaded Yago dumps (found in yagoTransitiveType.ttl and yagoMultilingualInstanceLabels.ttl) 
+that will not be parsed by Jena RDF Parser.(these will generate RiotExceptions 
+and files will not be indexed correctly)
 
-For dealing with corrupted RDF files in Freebase, Andy Seaborne has created an Perl script that 
-is able to correct all those issues. Luckily we can use the same script for fixing Yago dumps.
+In Order to fix these dumps you need to copy dumps_fix.sh script to the directory containing downloaded dumps
+and run it (This may take a while to complete depending on your system resources)
 
-You can download the script from here
-
-    http://people.apache.org/~andy/Freebase20121223/fixit
-
-In order to fix yago dumps you need to copy the downloaded "fixit" perl script and
-"dumps_fix.sh" script to the directory containing yago files and run the dumps_fix script 
 
 ### (5) Entity Scores
 
