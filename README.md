@@ -182,5 +182,52 @@ the Bundle described above. To install the data you need copy this file to the
  picked up during the installation of the bundle automatically. If you provide 
  the file afterwards you will also need to restart the SolrYard installed by the 
  Bundle.
+
+## configuring Enhancements Engines Using YAGO Referenced Site
+
+This section gives the configuration parameters and values to be used 
+when configuring entity linking engines with Yago Referenced site
+
+### configuring Named Entity Tagging Engine
+
+Details regarding Named Entity Tagging is given in
+
+    https://stanbol.apache.org/docs/trunk/components/enhancer/engines/namedentitytaggingengine.html
+
+Following gives the values needed for configuration parameters
+
+    Referenced Site: yago
+    Persons: true
+    Person Type: http://yago-knowledge.org/resource/wordnet_person_100007846    
+    Organisations: true
+    Organisation Type: http://yago-knowledge.org/resource/wordnet_organization_108008335
+    Places: true
+    Place Type: http://yago-knowledge.org/resource/yagoGeoEntity
+    Label Field: rdfs:label
+
+NOTE: In order to limit label search for types given above you need to index 
+yagoTransitiveType dump. 
+
+### Configuring Entityhub Linking Engine
+
+Details regarding configuring Entityhub Linking engine is given
+in
+
+    https://stanbol.apache.org/docs/trunk/components/enhancer/engines/entityhublinking
+
+Here only the values specific to yago site is given. You can use above documentation to configure values 
+for other parameters (defaults for those will also work)
+
+    Referenced Site: yago
+
+In order to correctly classify results in to persons, orgaizations, places and others, you need
+to add following type mappings in the configuration
+
+    http://yago-knowledge.org/resource/wordnet_person_100007846 > dbp-ont:Person
+    http://yago-knowledge.org/resource/wordnet_organization_108008335 > dbp-ont:Organisation
+    http://yago-knowledge.org/resource/yagoGeoEntity > dbp-ont:Place 
+
+
+
     
     
