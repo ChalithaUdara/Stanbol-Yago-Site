@@ -95,6 +95,9 @@ yago:wasDestroyedOnDate | d=xsd:dateTime
 yago:endedOnDate | d=xsd:dateTime
 yago:happenedOnDate | d=xsd:dateTime
 
+#copy geo related
+yago:hasLongitude | d=xsd:double > geo:long
+yago:hasLatitude | d=xsd:double > geo:lat
 
 # yago dbpedia ontology mappings
 http://dbpedia.org/ontology/*
