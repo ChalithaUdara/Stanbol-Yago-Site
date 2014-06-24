@@ -1,6 +1,8 @@
 #!/bin/bash
 
-for file in *.ttl
+WORKSPACE=indexing/resources/rdfdata
+
+for file in ${WORKSPACE}/*.ttl
 do
    echo "Processing $file" 
    sed -i -e '/.*<\/text.*/d' \
