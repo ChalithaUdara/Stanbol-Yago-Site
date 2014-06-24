@@ -102,8 +102,9 @@ Dump files
 
 contains labels for entities.
 
-You need to copy the script language_code_convert.sh to the directory containing above files and
-run it in order to fix language codes.
+In order to fix language codes once you have copied these files to indexing/resources/rdfdata
+you have to copy the script language_code_convert.sh to indexing root directory(same directory
+contaning yago indexer jar file) and run it.  
 
 NOTE: If you did not perform this step you will not be able to correctly link mentions with entities
 in your referenced site. Therefore it is very important to perform this step.
@@ -114,9 +115,8 @@ There are URIs in the downloaded Yago dumps (found in yagoTransitiveType.ttl and
 that will not be parsed by Jena RDF Parser.(these will generate RiotExceptions 
 and files will not be indexed correctly)
 
-In Order to fix these dumps you need to copy dumps_fix.sh script to the directory containing downloaded dumps
-and run it (This may take a while to complete depending on your system resources)
-
+In Order to fix these dumps you need to copy dumps_fix.sh script to the indexing root directory(same directory
+contaning yago indexer jar file) and run it (This may take a while to complete depending on your system resources)
 
 ### (5) Entity Scores
 
