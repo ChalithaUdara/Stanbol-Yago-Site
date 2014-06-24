@@ -3,17 +3,21 @@
 #Only converts the 53 languages supported by Stanbol
 
 WORKSPACE=indexing/resources/rdfdata
+TEMP_FILE=indexing/resources/temp.ttl 
 
 if [ -f "${WORKSPACE}/yagoLabels.ttl" ];  
 then
-   sed -i 's/@eng ./@en ./' ${WORKSPACE}/yagoLabels.ttl 
+   echo "fixing yagoLabels" 
+   sed 's/@eng ./@en ./' ${WORKSPACE}/yagoLabels.ttl > $TEMP_FILE
+   mv $TEMP_FILE ${WORKSPACE}/yagoLabels.ttl
 else
    echo "[ERROR] Yago labels file is not found"
 fi
 
 if [ -f "${WORKSPACE}/yagoMultilingualInstanceLabels.ttl" ]; 
 then
-    sed -i -e 's/@afr ./@af ./' \
+    echo "fixing yagoMultilingualInstanceLabels"
+    sed -e 's/@afr ./@af ./' \
 	-e 's/@ara ./@ar ./' \
 	-e 's/@bul ./@bg ./' \
 	-e 's/@ben ./@bn ./' \
@@ -66,7 +70,8 @@ then
 	-e 's/@vie ./@vi ./' \
         -e 's/@zho ./@zh ./' \
 	-e '/.*\".*\"@[A-Za-z][A-Za-z][A-Za-z][A-Za-z]*/d' \
-	-e '/.*\".*\"@[A-Za-z] ./d' ${WORKSPACE}/yagoMultilingualInstanceLabels.ttl
+	-e '/.*\".*\"@[A-Za-z] ./d' ${WORKSPACE}/yagoMultilingualInstanceLabels.ttl > $TEMP_FILE
+   mv $TEMP_FILE ${WORKSPACE}/yagoMultilingualInstanceLabels.ttl
 else
    echo "[WARNING] Yago dump for multilingual labels is not found"
 fi
