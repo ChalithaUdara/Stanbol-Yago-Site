@@ -126,26 +126,16 @@ higher rank. The file containing outgoing links to other pages is "yagoWikipedia
 In addition to outlinks this file contain the sizes of the wiki articles and urls for articles.
 This file need to be preprocessed to remove informations other than outlinks.
 
-If you have already downloaded the full yago dataset, you can use following command to generate 
-incoming links
+In order to calculate entity scores you need to copy "yagoRankings.sh" script to indexing
+root directory and run it. If you have already copied "yagoWikipediaInfo.ttl" to
+"indexing/resources/rdfdata", this will use that file. Otherwise it will automatically 
+download "yagoWikipediaInfo.ttl" and calculate entity scores. 
 
-    sed -e '/#.*/d' -e '/@.*/d' -e '/.*has.*/d' -e '/^\s*$/d' -e 's/.*<\([^>]*\)> ./\1/' yagoWikipediaInfo.ttl \
-        | sort \
-        | uniq -c  \
-        | sort -nr > incoming_links.txt
-
-Otherwise use the following command to download and create incoming links file
-
-    curl www.mpi-inf.mpg.de/yago-naga/yago/download/yago/yagoWikipediaInfo.ttl.7z \
-        | 7z \
-        | sed -e '/#.*/d' -e '/@.*/d' -e '/.*has.*/d' -e '/^\s*$/d' -e 's/.*<\([^>]*\)> ./\1/' \
-        | sort \
-        | uniq -c  \
-        | sort -nr > incoming_links.txt
-
-The resulting file MUST BE copied to
+The result of this script is the 
 
     indexing/resources/incoming_links.txt
+
+which contains entity rankings
 
 ### (6) Create the Index
 
